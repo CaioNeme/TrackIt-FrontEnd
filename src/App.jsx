@@ -1,10 +1,13 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import axios from "axios";
+import { useState } from "react";
 import HomePage from "./pages/HomePage.jsx";
 import Register from "./pages/Register.jsx";
 import Habits from "./pages/Habits.jsx";
 import Today from "./pages/Today.jsx";
 import Historic from "./pages/Historic.jsx";
-import { useState } from "react";
+
+axios.defaults.headers.common['Authorization'] = 'QHuPiPmVdHshIxfAx1P0c7cn';
 
 
 function App() {
@@ -16,7 +19,7 @@ function App() {
     password: ""
   });
 
-  console.log(register);
+
 
   return (
     <>

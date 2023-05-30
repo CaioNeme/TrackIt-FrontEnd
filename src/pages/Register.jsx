@@ -36,14 +36,15 @@ export default function Register(props) {
         });
 
         promise.catch(erro => {
+          console.log(register);
           console.log(erro);
-          alert("Erro:", erro.response.status);
           setRegister({
             email: "",
             name: "",
             image: "",
             password: ""
           });
+          alert("Erro:", erro.response.status);
         })
 
       }}>
