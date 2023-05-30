@@ -1,6 +1,4 @@
 import styled from "styled-components";
-import axios from "axios";
-import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
@@ -59,6 +57,7 @@ const Task = styled.div`
 
   background-color:#FFF;
   margin: 0px 17px 10px 17px;
+  border-radius: 5px;
   
   div{
     display:flex;
@@ -66,8 +65,10 @@ const Task = styled.div`
     align-items:center;
 
     position:relative;
+    margin-left:15px;
     p{
       margin-top:13px;
+      margin-left:0px;
     }
 
     ion-icon{
@@ -167,7 +168,7 @@ const WeekDays = styled.p`
   width: 30px;
   height: 30px;
 
-  margin-left:4px;
+  margin-right:4px;
 
   background: #FFFFFF;
   border: 1px solid #D5D5D5;
@@ -187,6 +188,7 @@ const Text = styled.p`
   align-items:center;
   margin-left:17px;
   margin-right:17px;
+  margin-top:20px;
 
   font-family: 'Lexend Deca';
   font-style: normal;

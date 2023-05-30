@@ -1,29 +1,71 @@
 import styled from "styled-components";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "../assets/img/logo.png";
 
+export default function Register(props) {
 
-export default function Register() {
+  const { register, setRegister } = props;
+  const navigate = useNavigate();
+
+  function handleChange(event) {
+    const newRegister = { ...register };
+    newRegister[event.target.name] = event.target.value;
+    setRegister(newRegister);
+
+  }
+
   return (
-    <>
+    <Size>
       <LogoText>
         <img src={Logo} alt="" />
         <p>TrackIt</p>
       </LogoText>
-      <Form>
-        <input required placeholder="E-mail" type="email" />
-        <input required placeholder="Senha" type="password" />
-        <input required placeholder="Nome" type="text" />
-        <input required placeholder="Foto" type="url" />
+      <Form onSubmit={event => {
+        event.preventDefault();
+
+        let post = register;
+
+        const URLPostRegister = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login"
+
+        const promise = axios.post(URLPostRegister, post);
+
+        promise.then(resposta => {
+          console.log(resposta.data);
+          navigate("/")
+        });
+
+        promise.catch(erro => {
+          console.log(erro);
+          alert("Erro:", erro.response.status);
+          setRegister({
+            email: "",
+            name: "",
+            image: "",
+            password: ""
+          });
+        })
+
+      }}>
+        <input required onChange={handleChange} value={register.email} name="email" placeholder="E-mail" type="email" />
+        <input required onChange={handleChange} value={register.password} name="password" placeholder="Senha" type="password" />
+        <input required onChange={handleChange} value={register.name} name="name" placeholder="Nome" type="text" />
+        <input required onChange={handleChange} value={register.image} name="image" placeholder="Foto" type="url" />
 
         <button>Cadastrar</button>
       </Form>
-      <LogIn><p>Já tem uma conta? Faça o login!</p></LogIn>
-    </>
+      <Link to={"/"}>
+        <LogIn><p>Já tem uma conta? Faça o login!</p></LogIn>
+      </Link>
+    </Size>
   );
 }
 
+const Size = styled.div`
+  width:375px;
+  height:667px;
+  background-color:#FFF;
+`;
 const LogoText = styled.div`
   display:flex;
   flex-direction:column;

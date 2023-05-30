@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 
 export default function Footer() {
@@ -6,15 +7,21 @@ export default function Footer() {
     <>
       <Shadow />
       <Foot>
-        <p>Hábitos</p>
+        <Link to={"/habitos"}>
+          <p>Hábitos</p>
+        </Link>
         <CircleBigBlue>
           <WhiteCircle>
             <CircleSmallBlue>
-              <p>Hoje</p>
+              <Link to={"/hoje"}>
+                <p>Hoje</p>
+              </Link>
             </CircleSmallBlue>
           </WhiteCircle>
         </CircleBigBlue>
-        <p>Histórico</p>
+        <Link to={"/historico"}>
+          <p>Histórico</p>
+        </Link>
       </Foot>
     </>
   );
@@ -39,14 +46,14 @@ const Foot = styled.div`
   justify-content:space-around;
   align-items:center;
 
-  P{
+  p{
     width: 68px;
     height: 22px;
 
     font-family: 'Lexend Deca';
     font-style: normal;
     font-weight: 400;
-    font-size: 17.976px;
+    font-size: 18px;
     line-height: 22px;
     text-align: center;
 

@@ -5,7 +5,7 @@ import Logo from "../assets/img/logo.png";
 
 export default function HomePage() {
   return (
-    <>
+    <Size>
       <LogoText>
         <img src={Logo} alt="" />
         <p>TrackIt</p>
@@ -15,11 +15,18 @@ export default function HomePage() {
         <input placeholder="Senha" type="password" />
         <button>Entrar</button>
       </Form>
-      <SignUp><p>Não tem uma conta? Cadastre-se!</p></SignUp>
-    </>
+      <Link to={"/cadastro"}>
+        <SignUp><p>Não tem uma conta? Cadastre-se!</p></SignUp>
+      </Link>
+    </Size>
   );
 }
 
+const Size = styled.div`
+  width:375px;
+  height:667px;
+  background-color:#FFF;
+`;
 const LogoText = styled.div`
   display:flex;
   flex-direction:column;

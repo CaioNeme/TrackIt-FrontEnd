@@ -4,6 +4,9 @@ const GlobalStyle = createGlobalStyle`
   body{
     background-color:whitesmoke;
   }
+  a{
+    text-decoration:none;
+  }
 `;
 
 export default GlobalStyle;
