@@ -12,12 +12,12 @@ export default function Register() {
         <p>TrackIt</p>
       </LogoText>
       <Form>
-        <input placeholder="E-mail" type="email" />
-        <input placeholder="Senha" type="password" />
-        <input placeholder="Nome" type="text" />
-        <input placeholder="Foto" type="url" />
+        <input required placeholder="E-mail" type="email" />
+        <input required placeholder="Senha" type="password" />
+        <input required placeholder="Nome" type="text" />
+        <input required placeholder="Foto" type="url" />
 
-        <div>Cadastrar</div>
+        <button>Cadastrar</button>
       </Form>
       <LogIn><p>Já tem uma conta? Faça o login!</p></LogIn>
     </>
@@ -56,6 +56,8 @@ const Form = styled.form`
   margin-top:33px;
 
   input{
+    cursor: pointer;
+
     box-sizing:border-box;
 
     width: 303px;
@@ -75,7 +77,12 @@ const Form = styled.form`
 
     color: #000;
   }
-  div{
+  button{
+    appearance:none;
+    border-width: none;
+    border-style: none;
+    border-color: none;
+    border-image: none;
     display:flex;
     justify-content:center;
     align-items:center;
@@ -95,6 +102,7 @@ const Form = styled.form`
     text-align: center;
 
     color: #FFFFFF;
+    cursor: pointer;
 
   }
 `;
@@ -102,7 +110,11 @@ const LogIn = styled.div`
   display:flex;
   justify-content:center;
   align-items:center;
+
   margin-top:25px;
+
+  cursor: pointer;
+
   p{
     width: 232px;
     height: 17px;

@@ -13,7 +13,7 @@ export default function HomePage() {
       <Form>
         <input placeholder="E-mail" type="email" />
         <input placeholder="Senha" type="password" />
-        <div>Entrar</div>
+        <button>Entrar</button>
       </Form>
       <SignUp><p>Não tem uma conta? Cadastre-se!</p></SignUp>
     </>
@@ -52,6 +52,8 @@ const Form = styled.form`
   margin-top:33px;
 
   input{
+    cursor: pointer;
+
     box-sizing:border-box;
 
     width: 303px;
@@ -71,11 +73,17 @@ const Form = styled.form`
 
     color: #000;
   }
-  div{
+  button{
+    appearance:none;
+    border-width: none;
+    border-style: none;
+    border-color: none;
+    border-image: none;
     display:flex;
     justify-content:center;
     align-items:center;
 
+    cursor: pointer;
 
     width: 303px;
     height: 45px;
@@ -98,7 +106,11 @@ const SignUp = styled.div`
   display:flex;
   justify-content:center;
   align-items:center;
+
   margin-top:25px;
+
+  cursor: pointer;
+
   p{
     width: 232px;
     height: 17px;
