@@ -12,6 +12,13 @@ axios.defaults.headers.common['Authorization'] = 'QHuPiPmVdHshIxfAx1P0c7cn';
 
 function App() {
 
+  const [imgUser, setImgUser] = useState('');
+
+  const [login, setLogin] = useState({
+    email: "",
+    password: ""
+  });
+
   const [register, setRegister] = useState({
     email: "",
     name: "",
@@ -25,13 +32,14 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<HomePage login={login} setLogin={setLogin} setImgUser={setImgUser} />} />
           <Route path="/cadastro" element={<Register register={register} setRegister={setRegister} />} />
-          <Route path="/habitos" element={<Habits />} />
+          <Route path="/habitos" element={<Habits imgUser={imgUser} />} />
           <Route path="/hoje" element={<Today />} />
           <Route path="/historico" element={<Historic />} />
         </Routes>
       </BrowserRouter>
+
     </>
   )
 }

@@ -1,18 +1,53 @@
 import styled from "styled-components";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "../assets/img/logo.png";
 
-export default function HomePage() {
+export default function HomePage(props) {
+
+  const { login, setLogin, setImgUser } = props;
+  const navigate = useNavigate();
+
+  function handleChange(event) {
+    const newLogin = { ...login };
+    newLogin[event.target.name] = event.target.value;
+    setLogin(newLogin);
+  }
+
   return (
     <Size>
       <LogoText>
         <img src={Logo} alt="" />
         <p>TrackIt</p>
       </LogoText>
-      <Form>
-        <input placeholder="E-mail" type="email" />
-        <input placeholder="Senha" type="password" />
+      <Form onSubmit={event => {
+        event.preventDefault();
+
+        const URLPostLogin = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login";
+
+        let post = login;
+
+        const promise = axios.post(URLPostLogin, post);
+
+        promise.then(resposta => {
+          setImgUser(resposta.data.image);
+          navigate("/habitos");
+          console.log(resposta.data);
+
+        });
+        promise.catch(erro => {
+          console.log(erro);
+          setLogin({
+            email: "",
+            password: ""
+          });
+        })
+
+
+      }}>
+        <input required onChange={handleChange} value={login.email} name="email" placeholder="E-mail" type="email" />
+        <input required onChange={handleChange} value={login.password} name="password" placeholder="Senha" type="password" />
+
         <button>Entrar</button>
       </Form>
       <Link to={"/cadastro"}>

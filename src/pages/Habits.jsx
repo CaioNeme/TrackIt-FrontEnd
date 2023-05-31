@@ -1,30 +1,66 @@
 import styled from "styled-components";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import Week from "../components/Week";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
+export default function Habitis(props) {
 
-export default function Habitis() {
+  const weekdays = [
+    { day: "D", days: 0 },
+    { day: "S", days: 1 },
+    { day: "T", days: 2 },
+    { day: "Q", days: 3 },
+    { day: "Q", days: 4 },
+    { day: "S", days: 5 },
+    { day: "S", days: 6 }
+  ];
+
+  const [habitDay, setHabitDay] = useState([]);
+  const [habitName, setHabitiName] = useState({ name: "" });
+  const [task, setTask] = useState([]);
+  const { imgUser } = props;
+
+  useEffect(() => {
+    const URLGetTask = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
+
+    const promise = axios.get(URLGetTask);
+
+    promise.then(resposta => setTask(resposta));
+
+  }, [onsubmit]);
+
+  function handleChange(event) {
+    const newHabitName = { ...habitName };
+    newHabitName[event.target.name] = event.target.value;
+    setHabitiName(newHabitName);
+  }
+
+  console.log(task);
+  console.log(habitName);
+  console.log(habitDay);
+
   return (
     <Size>
-      <Header />
+      <Header imgUser={imgUser} />
       <Head>
         <p>Meus hábitos</p>
         <div>+</div>
       </Head>
       <NewHabitis>
-        <input placeholder="Nome do Hábito" type="text" />
+        <input name="name" value={habitName.name} onChange={handleChange} placeholder="Nome do Hábito" type="text" />
         <div>
-          <WeekDays>D</WeekDays>
-          <WeekDays>S</WeekDays>
-          <WeekDays>T</WeekDays>
-          <WeekDays>Q</WeekDays>
-          <WeekDays>Q</WeekDays>
-          <WeekDays>S</WeekDays>
-          <WeekDays>S</WeekDays>
+          {weekdays.map(info => <Week
+            habitDay={habitDay}
+            setHabitDay={setHabitDay}
+            key={info.number}
+            {...info}
+          />)}
         </div>
         <Buttons>
-          <Cancel>Cancelar</Cancel>
-          <Save>Salvar</Save>
+          <Cancel type="button">Cancelar</Cancel>
+          <Save type="submit">Salvar</Save>
         </Buttons>
       </NewHabitis>
       <Task>
@@ -33,13 +69,7 @@ export default function Habitis() {
           <ion-icon name="trash-outline"></ion-icon>
         </div>
         <div>
-          <WeekDays>D</WeekDays>
-          <WeekDays>S</WeekDays>
-          <WeekDays>T</WeekDays>
-          <WeekDays>Q</WeekDays>
-          <WeekDays>Q</WeekDays>
-          <WeekDays>S</WeekDays>
-          <WeekDays>S</WeekDays>
+          {weekdays.map(info => <WeekDays key={info.number}>{info.day}</WeekDays>)}
         </div>
       </Task>
       <Text>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</Text>
@@ -48,6 +78,30 @@ export default function Habitis() {
   );
 }
 
+const WeekdaysSelect = styled.p`
+  cursor: pointer;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  width: 30px;
+  height: 30px;
+
+  margin-right:4px;
+
+  background: #CFCFCF;
+  border: 1px solid #D5D5D5;
+  border-radius: 5px;
+
+  font-family: 'Lexend Deca';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 25px;
+
+  color: #FFF;
+`;
 const Size = styled.div`
   width:375px;
 `;
@@ -82,9 +136,17 @@ const Task = styled.div`
     }
   }
 `;
-const Save = styled.div`
+const Save = styled.button`
+  appearance:none;
+  border-width: none;
+  border-style: none;
+  border-color: none;
+  border-image: none;
+
   width: 84px;
   height: 35px;
+
+  margin-right:15px;
 
   justify-content:center;
 
@@ -99,9 +161,19 @@ const Save = styled.div`
   border-radius: 5px;
   color: #FFF;
 `;
-const Cancel = styled.div`
+const Cancel = styled.button`
+  appearance:none;
+  border-width: none;
+  border-style: none;
+  border-color: none;
+  border-image: none;
+
   width: 69px;
   height: 20px;
+
+  margin-right:25px;
+
+  background-color:#FFF;
 
   font-family: 'Lexend Deca';
   font-style: normal;
@@ -122,7 +194,7 @@ const Buttons = styled.span`
   margin-bottom:15px;
 `;
 
-const NewHabitis = styled.div`
+const NewHabitis = styled.form`
   width: 340px;
   height: 180px;
 

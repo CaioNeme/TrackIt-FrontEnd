@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import imgUser from "../assets/img/imgUser.png";
 
-export default function Header() {
+export default function Header(props) {
+  const { imgUser } = props
   return (
     <>
       <Shadow />

@@ -26,7 +26,7 @@ export default function Register(props) {
 
         let post = register;
 
-        const URLPostRegister = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login"
+        const URLPostRegister = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up"
 
         const promise = axios.post(URLPostRegister, post);
 
