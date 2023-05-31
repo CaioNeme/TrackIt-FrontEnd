@@ -2,11 +2,14 @@ import styled from "styled-components";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../assets/img/logo.png";
+import { ThreeDots } from "react-loader-spinner";
+import { useState } from "react";
 
 export default function HomePage(props) {
 
   const { login, setLogin, setImgUser } = props;
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   function handleChange(event) {
     const newLogin = { ...login };
@@ -22,12 +25,10 @@ export default function HomePage(props) {
       </LogoText>
       <Form onSubmit={event => {
         event.preventDefault();
-
         const URLPostLogin = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login";
-
         let post = login;
-
         const promise = axios.post(URLPostLogin, post);
+        setLoading(true)
 
         promise.then(resposta => {
           setImgUser(resposta.data.image);
@@ -36,19 +37,29 @@ export default function HomePage(props) {
 
         });
         promise.catch(erro => {
-          console.log(erro);
-          setLogin({
-            email: "",
-            password: ""
-          });
+          setLoading(false);
+          alert(erro.response.data.message);
         })
 
 
       }}>
         <input required onChange={handleChange} value={login.email} name="email" placeholder="E-mail" type="email" />
         <input required onChange={handleChange} value={login.password} name="password" placeholder="Senha" type="password" />
+        {loading === false && <button>Entrar</button>}
 
-        <button>Entrar</button>
+
+        {loading === true && <button><ThreeDots
+          height="80"
+          width="80"
+          radius="9"
+          color="#FFF"
+          ariaLabel="three-dots-loading"
+          wrapperStyle={{}}
+          wrapperClassName=""
+          visible={true}
+        /></button>}
+
+
       </Form>
       <Link to={"/cadastro"}>
         <SignUp><p>Não tem uma conta? Cadastre-se!</p></SignUp>

@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 import Week from "../components/Week";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { ThreeDots } from "react-loader-spinner";
 
 export default function Habitis(props) {
 
@@ -21,6 +22,8 @@ export default function Habitis(props) {
   const [habitName, setHabitiName] = useState({ name: "" });
   const [task, setTask] = useState([]);
   const { imgUser } = props;
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const URLGetTask = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
@@ -29,7 +32,7 @@ export default function Habitis(props) {
 
     promise.then(resposta => setTask(resposta));
 
-  }, [onsubmit]);
+  }, []);
 
   function handleChange(event) {
     const newHabitName = { ...habitName };
@@ -46,9 +49,19 @@ export default function Habitis(props) {
       <Header imgUser={imgUser} />
       <Head>
         <p>Meus hábitos</p>
-        <div>+</div>
+        <div onClick={() => setOpen(true)}>+</div>
       </Head>
-      <NewHabitis>
+      {open === true && <NewHabitis onSubmit={(event => {
+        event.preventDefault();
+        setLoading(true);
+
+        //axios.then
+        // setLoading(false);
+        // setOpen(false);
+        // setHabitiName({ name: "" });
+        // setHabitDay([]);
+
+      })}>
         <input name="name" value={habitName.name} onChange={handleChange} placeholder="Nome do Hábito" type="text" />
         <div>
           {weekdays.map(info => <Week
@@ -59,11 +72,30 @@ export default function Habitis(props) {
           />)}
         </div>
         <Buttons>
-          <Cancel type="button">Cancelar</Cancel>
-          <Save type="submit">Salvar</Save>
+          <Cancel type="button" onClick={() => {
+            setOpen(false);
+            setHabitiName({ name: "" });
+            setHabitDay([]);
+            setLoading(false);
+          }}>Cancelar</Cancel>
+          {loading === false && <Save type="submit">Salvar</Save>}
+          {loading === true && <Save type="submit">
+            <ThreeDots
+              height="35"
+              width="50"
+              radius="9"
+              color="#FFF"
+              ariaLabel="three-dots-loading"
+              wrapperStyle={{}}
+              wrapperClassName=""
+              visible={true}
+            />
+          </Save>}
+
+
         </Buttons>
-      </NewHabitis>
-      <Task>
+      </NewHabitis>}
+      {/* <Task>
         <div>
           <Text>Ler 1 capítulo de livro</Text>
           <ion-icon name="trash-outline"></ion-icon>
@@ -71,7 +103,7 @@ export default function Habitis(props) {
         <div>
           {weekdays.map(info => <WeekDays key={info.number}>{info.day}</WeekDays>)}
         </div>
-      </Task>
+      </Task> */}
       <Text>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</Text>
       <Footer />
     </Size>

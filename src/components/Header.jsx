@@ -1,13 +1,16 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
-import imgUser from "../assets/img/imgUser.png";
 
 export default function Header(props) {
   const { imgUser } = props
   return (
     <>
       <Shadow />
+
       <Head>
-        <p>TrackIt</p>
+        <Link to={"/"}>
+          <p>TrackIt</p>
+        </Link>
         <img src={imgUser} alt="Foto do usuario" />
       </Head>
     </>

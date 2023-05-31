@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import 'react-circular-progressbar/dist/styles.css';
 
 
 export default function Footer() {
@@ -10,19 +12,25 @@ export default function Footer() {
         <Link to={"/habitos"}>
           <p>Hábitos</p>
         </Link>
-        <CircleBigBlue>
-          <WhiteCircle>
-            <CircleSmallBlue>
-              <Link to={"/hoje"}>
-                <p>Hoje</p>
-              </Link>
-            </CircleSmallBlue>
-          </WhiteCircle>
-        </CircleBigBlue>
+        <Link to="/hoje">
+          <CircularProgressbar
+            className="circularProgessBar"
+            value={66}
+            text={"Hoje"}
+            background
+            backgroundPadding={6}
+            styles={buildStyles({
+              backgroundColor: "#52B6FF",
+              textColor: "#FFF",
+              pathColor: "#FFF",
+              trailColor: "transparent"
+            })}
+          />
+        </Link>
         <Link to={"/historico"}>
           <p>Histórico</p>
         </Link>
-      </Foot>
+      </Foot >
     </>
   );
 }
@@ -46,6 +54,17 @@ const Foot = styled.div`
   justify-content:space-around;
   align-items:center;
 
+  .circularProgessBar {
+    font-family: 'Lexend Deca';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+    text-align: center;
+    margin-bottom:40px;
+    width: 91px;
+  }
+
   p{
     width: 68px;
     height: 22px;
@@ -60,42 +79,4 @@ const Foot = styled.div`
     color: #52B6FF;
   }
 
-`;
-const CircleBigBlue = styled.div`
-  display:flex;
-  justify-content:space-around;
-  align-items:center;
-
-  margin-bottom:40px;
-
-  width: 91px;
-  height: 91px;
-
-  background: #52B6FF;
-  border-radius:50%;
-`;
-const WhiteCircle = styled.div`
-  display:flex;
-  justify-content:space-around;
-  align-items:center;
-
-  background: #FFFFFF;
-  border-radius:50%;
-
-  width: 81px;
-  height: 81px;
-`;
-const CircleSmallBlue = styled.div`
-  display:flex;
-  justify-content:space-around;
-  align-items:center;
-
-  background: #52B6FF;
-  border-radius:50%;
-
-  width: 66px;
-  height: 66px;
-  p{
-    color:#fff
-  }
 `;
