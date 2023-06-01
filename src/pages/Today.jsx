@@ -5,6 +5,9 @@ import { useEffect, useContext, useState } from "react";
 import { UserDataContext } from "../context/UserDataContext";
 import { ProgressBarContext } from "../context/ProgressBarContext";
 import axios from "axios";
+import 'dayjs/locale/pt-br';
+import dayjs from "dayjs";
+
 
 export default function Today() {
   const { setProgressBar } = useContext(ProgressBarContext);
@@ -36,24 +39,29 @@ export default function Today() {
       n++;
     }
   });
-  setProgressBar((n / task.length) * 100);
+
+  if (task.length === 0) {
+    setProgressBar(0);
+  } else {
+    setProgressBar((n / task.length) * 100);
+  }
 
   return (
     <Size>
       <Header />
       <div>
         <Head>
-          <h1>Segunda, 17/05</h1>
-          {n === 0 ? <p>Nenhum hábito concluído ainda</p> : <p><Completed>{(n / task.length) * 100 + "% dos hábitos concluídos"}</Completed></p>}
+          <h1 data-test="today" >{dayjs().locale('pt-br').format('dddd, DD/MM')}</h1>
+          {n === 0 ? <p data-test="today-counter" >Nenhum hábito concluído ainda</p> : <p><Completed data-test="today-counter">{((n / task.length) * 100).toFixed(0) + "% dos hábitos concluídos"}</Completed></p>}
         </Head>
         {task.map(dado =>
-          <Task>
+          <Task data-test="today-habit-coitainer" >
             <div>
-              <h1>{dado.name}</h1>
-              <p>Sequência atual: {dado.currentSequence} dias</p>
-              <p>Seu recorde: {dado.highestSequence} dias</p>
+              <h1 data-test="today-habit-name" >{dado.name}</h1>
+              {dado.currentSequence > 0 ? <p><Completed data-test="today-habit-sequence" >Sequência atual: {dado.currentSequence} dias</Completed></p> : <p data-test="today-habit-sequence" >Sequência atual: {dado.currentSequence} dias</p>}
+              {dado.highestSequence !== 0 && dado.highestSequence === dado.currentSequence ? <p><Completed data-test="today-habit-record" >Seu recorde: {dado.highestSequence} dias</Completed></p> : <p data-test="today-habit-record" >Seu recorde: {dado.highestSequence} dias</p>}
             </div>
-            {dado.done === true ? <Completed onClick={() => {
+            {dado.done === true ? <Completed data-test="today-habit-check-btn" onClick={() => {
               const URLPostUnCheck = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${dado.id}/uncheck`;
               const body = {};
               const promise = axios.post(URLPostUnCheck, body, config)
@@ -61,7 +69,7 @@ export default function Today() {
               promise.then(() => setCompleted(completed - 1)).catch(erro => console.log(erro.response.data.message))
 
             }}><ion-icon name="checkbox"></ion-icon></Completed> :
-              <ToDo onClick={() => {
+              <ToDo data-test="today-habit-check-btn" onClick={() => {
                 const URLPostCheck = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${dado.id}/check`;
                 const body = {};
                 const promise = axios.post(URLPostCheck, body, config)
@@ -89,6 +97,7 @@ const Head = styled.div`
     font-weight: 400;
     font-size: 23px;
     line-height: 29px;
+    text-transform: capitalize;
 
     color: #126BA5;
   }

@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import imgUser from "../assets/img/imgUser.png"
 import { useContext } from 'react';
 import { UserDataContext } from "../context/UserDataContext";
 
@@ -13,11 +12,11 @@ export default function Header() {
   return (
     <>
       <Shadow />
-      <Head>
+      <Head data-test="header">
         <Link to={"/"}>
           <p>TrackIt</p>
         </Link>
-        <img src={userData.image} alt="Foto do usuario" />
+        <img data-test="avatar" src={userData.image} alt="Foto do usuario" />
       </Head>
     </>
   )

@@ -56,15 +56,15 @@ export default function Register() {
         })
 
       }}>
-        <input required onChange={handleChange} value={register.email} name="email" placeholder="E-mail" type="email" />
-        <input required onChange={handleChange} value={register.password} name="password" placeholder="Senha" type="password" />
-        <input required onChange={handleChange} value={register.name} name="name" placeholder="Nome" type="text" />
-        <input required onChange={handleChange} value={register.image} name="image" placeholder="Foto" type="url" />
+        <input data-test="email-input" required onChange={handleChange} value={register.email} name="email" placeholder="E-mail" type="email" />
+        <input data-test="password-input" required onChange={handleChange} value={register.password} name="password" placeholder="Senha" type="password" />
+        <input data-test="user-name-input" required onChange={handleChange} value={register.name} name="name" placeholder="Nome" type="text" />
+        <input data-test="user-image-input" required onChange={handleChange} value={register.image} name="image" placeholder="Foto" type="url" />
 
-        <button>Cadastrar</button>
+        <button data-test="signup-btn">Cadastrar</button>
       </Form>
       <Link to={"/"}>
-        <LogIn><p>Já tem uma conta? Faça o login!</p></LogIn>
+        <LogIn data-test="login-link"><p>Já tem uma conta? Faça o login!</p></LogIn>
       </Link>
     </Size>
   );

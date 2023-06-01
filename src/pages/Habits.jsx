@@ -54,9 +54,9 @@ export default function Habitis() {
       <Header />
       <Head>
         <p>Meus hábitos</p>
-        <div onClick={() => setOpen(true)}>+</div>
+        <div data-test="habit-create-btn" onClick={() => setOpen(true)}>+</div>
       </Head>
-      {open === true && <NewHabitis onSubmit={event => {
+      {open === true && <NewHabitis data-test="habit-create-container" onSubmit={event => {
         event.preventDefault();
         setLoading(true);
 
@@ -75,10 +75,13 @@ export default function Habitis() {
           setHabitDay([]);
         })
 
-        promise.catch(erro => alert(erro.response.data.message));
+        promise.catch(erro => {
+          alert(erro.response.data.message);
+          setLoading(false);
+        });
 
       }}>
-        <input name="name" value={habitName.name} onChange={handleChange} placeholder="Nome do Hábito" type="text" />
+        <input data-test="habit-name-input" name="name" value={habitName.name} onChange={handleChange} placeholder="Nome do Hábito" type="text" />
         <div>
           {weekdays.map(info => <Week
             habitDay={habitDay}
@@ -87,14 +90,12 @@ export default function Habitis() {
           />)}
         </div>
         <Buttons>
-          <Cancel type="button" onClick={() => {
+          <Cancel data-test="habit-create-cancel-btn" type="button" onClick={() => {
             setOpen(false);
-            setHabitiName({ name: "" });
-            setHabitDay([]);
             setLoading(false);
           }}>Cancelar</Cancel>
-          {loading === false && <Save type="submit">Salvar</Save>}
-          {loading === true && <Save type="submit">
+          {loading === false && <Save data-test="habit-create-save-btn" type="submit">Salvar</Save>}
+          {loading === true && <Save disabled type="submit">
             <ThreeDots
               height="35"
               width="50"
@@ -109,15 +110,15 @@ export default function Habitis() {
         </Buttons>
       </NewHabitis>}
       {task.length !== 0 && task.map(dadosTask =>
-        <Task>
+        <Task data-test="habit-container" >
           <div>
-            <Text>{dadosTask.name}</Text>
-            <ion-icon onClick={() => {
-              const URLDeletTask = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${dadosTask.id}`
+            <Text data-test="habit-name" >{dadosTask.name}</Text>
+            <ion-icon data-test="habit-delete-btn" onClick={() => {
+              const URLDeleteTask = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${dadosTask.id}`
 
-              const promise = axios.delete(URLDeletTask, config)
+              const promise = axios.delete(URLDeleteTask, config)
 
-              promise.then(resposta => {
+              promise.then(() => {
                 setVariavel(variavel + 1);
               }).catch(erro => {
                 alert(erro.response.data.message);
@@ -126,7 +127,7 @@ export default function Habitis() {
             }} name="trash-outline" />
           </div>
           <div>
-            {weekdays.map(info => dadosTask.days.includes(info.days) ? <WeekdaysSelect key={info.number}>{info.day}</WeekdaysSelect> : <Weekdays key={info.number}>{info.day}</Weekdays>)}
+            {weekdays.map(info => dadosTask.days.includes(info.days) ? <WeekdaysSelect data-test="habit-day" key={info.number}>{info.day}</WeekdaysSelect> : <Weekdays data-test="habit-day" key={info.number}>{info.day}</Weekdays>)}
           </div>
         </Task>
       )}

@@ -9,11 +9,11 @@ export default function Week(props) {
 
   return (
     <>
-      {select === false && (<Weekdays key={number} onClick={() => {
+      {select === false && (<Weekdays data-test="habit-day" key={number} onClick={() => {
         setSelect(true);
         setHabitDay([...habitDay, days])
       }}>{props.day}</Weekdays>)}
-      {select === true && (<WeekdaysSelect key={number} onClick={() => {
+      {select === true && (<WeekdaysSelect data-test="habit-day" key={number} onClick={() => {
         setSelect(false);
         setHabitDay(habitDay.filter(a => a != days))
       }}>{props.day}</WeekdaysSelect>)}

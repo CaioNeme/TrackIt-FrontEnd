@@ -14,11 +14,11 @@ export default function Footer() {
   return (
     <>
       <Shadow />
-      <Foot>
-        <Link to={"/habitos"}>
+      <Foot data-test="menu">
+        <Link data-test="habit-link" to={"/habitos"}>
           <p>Hábitos</p>
         </Link>
-        <Link to="/hoje">
+        <Link data-test="today-link" to="/hoje">
           <CircularProgressbar
             className="circularProgessBar"
             value={progressBar}
@@ -33,7 +33,7 @@ export default function Footer() {
             })}
           />
         </Link>
-        <Link to={"/historico"}>
+        <Link data-test="history-link" to={"/historico"}>
           <p>Histórico</p>
         </Link>
       </Foot >

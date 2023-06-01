@@ -47,12 +47,12 @@ export default function HomePage() {
 
 
       }}>
-        <input required onChange={handleChange} value={login.email} name="email" placeholder="E-mail" type="email" />
-        <input required onChange={handleChange} value={login.password} name="password" placeholder="Senha" type="password" />
-        {loading === false && <button>Entrar</button>}
+        <input data-test="email-input" required onChange={handleChange} value={login.email} name="email" placeholder="E-mail" type="email" />
+        <input data-test="password-input" required onChange={handleChange} value={login.password} name="password" placeholder="Senha" type="password" />
+        {loading === false && <button data-test="login-btn">Entrar</button>}
 
 
-        {loading === true && <button><ThreeDots
+        {loading === true && <button disabled><ThreeDots
           height="80"
           width="80"
           radius="9"
@@ -66,7 +66,7 @@ export default function HomePage() {
 
       </Form>
       <Link to={"/cadastro"}>
-        <SignUp><p>Não tem uma conta? Cadastre-se!</p></SignUp>
+        <SignUp data-test="signup-link"><p>Não tem uma conta? Cadastre-se!</p></SignUp>
       </Link>
     </Size>
   );
