@@ -1,17 +1,23 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import imgUser from "../assets/img/imgUser.png"
+import { useContext } from 'react';
+import { UserDataContext } from "../context/UserDataContext";
 
-export default function Header(props) {
-  const { imgUser } = props
+
+export default function Header() {
+  const { userData } = useContext(UserDataContext);
+
+
+
   return (
     <>
       <Shadow />
-
       <Head>
         <Link to={"/"}>
           <p>TrackIt</p>
         </Link>
-        <img src={imgUser} alt="Foto do usuario" />
+        <img src={userData.image} alt="Foto do usuario" />
       </Head>
     </>
   )
@@ -24,6 +30,7 @@ const Shadow = styled.div`
 `;
 
 const Head = styled.div`
+  z-index:1;
   display:flex;
   justify-content:space-between;
   align-items:center;

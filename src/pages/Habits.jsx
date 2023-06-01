@@ -2,11 +2,14 @@ import styled from "styled-components";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Week from "../components/Week";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { ThreeDots } from "react-loader-spinner";
+import { UserDataContext } from "../context/UserDataContext";
 
-export default function Habitis(props) {
+
+export default function Habitis() {
+
 
   const weekdays = [
     { day: "D", days: 0 },
@@ -21,18 +24,24 @@ export default function Habitis(props) {
   const [habitDay, setHabitDay] = useState([]);
   const [habitName, setHabitiName] = useState({ name: "" });
   const [task, setTask] = useState([]);
-  const { imgUser } = props;
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { userData } = useContext(UserDataContext);
+  const [variavel, setVariavel] = useState(0);
+  const config = {
+    headers: {
+      "Authorization": `Bearer ${userData.token}`
+    }
+  }
 
   useEffect(() => {
     const URLGetTask = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
 
-    const promise = axios.get(URLGetTask);
+    const promise = axios.get(URLGetTask, config);
 
-    promise.then(resposta => setTask(resposta));
+    promise.then(resposta => setTask(resposta.data));
 
-  }, []);
+  }, [variavel]);
 
   function handleChange(event) {
     const newHabitName = { ...habitName };
@@ -40,34 +49,40 @@ export default function Habitis(props) {
     setHabitiName(newHabitName);
   }
 
-  console.log(task);
-  console.log(habitName);
-  console.log(habitDay);
-
   return (
     <Size>
-      <Header imgUser={imgUser} />
+      <Header />
       <Head>
         <p>Meus hábitos</p>
         <div onClick={() => setOpen(true)}>+</div>
       </Head>
-      {open === true && <NewHabitis onSubmit={(event => {
+      {open === true && <NewHabitis onSubmit={event => {
         event.preventDefault();
         setLoading(true);
 
-        //axios.then
-        // setLoading(false);
-        // setOpen(false);
-        // setHabitiName({ name: "" });
-        // setHabitDay([]);
+        const URLPostNewTask = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
+        const body = {
+          name: `${habitName.name}`,
+          days: habitDay
+        }
+        const promise = axios.post(URLPostNewTask, body, config)
 
-      })}>
+        promise.then(() => {
+          setVariavel(variavel + 1);
+          setLoading(false);
+          setOpen(false);
+          setHabitiName({ name: "" });
+          setHabitDay([]);
+        })
+
+        promise.catch(erro => alert(erro.response.data.message));
+
+      }}>
         <input name="name" value={habitName.name} onChange={handleChange} placeholder="Nome do Hábito" type="text" />
         <div>
           {weekdays.map(info => <Week
             habitDay={habitDay}
             setHabitDay={setHabitDay}
-            key={info.number}
             {...info}
           />)}
         </div>
@@ -91,22 +106,33 @@ export default function Habitis(props) {
               visible={true}
             />
           </Save>}
-
-
         </Buttons>
       </NewHabitis>}
-      {/* <Task>
-        <div>
-          <Text>Ler 1 capítulo de livro</Text>
-          <ion-icon name="trash-outline"></ion-icon>
-        </div>
-        <div>
-          {weekdays.map(info => <WeekDays key={info.number}>{info.day}</WeekDays>)}
-        </div>
-      </Task> */}
-      <Text>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</Text>
+      {task.length !== 0 && task.map(dadosTask =>
+        <Task>
+          <div>
+            <Text>{dadosTask.name}</Text>
+            <ion-icon onClick={() => {
+              const URLDeletTask = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${dadosTask.id}`
+
+              const promise = axios.delete(URLDeletTask, config)
+
+              promise.then(resposta => {
+                setVariavel(variavel + 1);
+              }).catch(erro => {
+                alert(erro.response.data.message);
+              });
+
+            }} name="trash-outline" />
+          </div>
+          <div>
+            {weekdays.map(info => dadosTask.days.includes(info.days) ? <WeekdaysSelect key={info.number}>{info.day}</WeekdaysSelect> : <Weekdays key={info.number}>{info.day}</Weekdays>)}
+          </div>
+        </Task>
+      )}
+      {task.length === 0 && <Text>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</Text>}
       <Footer />
-    </Size>
+    </Size >
   );
 }
 
@@ -162,8 +188,8 @@ const Task = styled.div`
       position: absolute;
       top:11px;
       right:10px;
-      width:13px;
-      height:15px;
+      width:20px;
+      height:20px;
       color: #666666;
     }
   }
@@ -262,7 +288,7 @@ const NewHabitis = styled.form`
     margin:0px 18px 10px 18px;
   }
 `;
-const WeekDays = styled.p`
+const Weekdays = styled.p`
   cursor: pointer;
 
   display:flex;

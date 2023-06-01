@@ -4,16 +4,16 @@ import styled from "styled-components";
 export default function Week(props) {
 
   const [select, setSelect] = useState(false)
-  const { habitDay, setHabitDay, days } = props;
+  const { habitDay, setHabitDay, days, number } = props;
 
 
   return (
     <>
-      {select === false && (<WeekDays onClick={() => {
+      {select === false && (<Weekdays key={number} onClick={() => {
         setSelect(true);
         setHabitDay([...habitDay, days])
-      }}>{props.day}</WeekDays>)}
-      {select === true && (<WeekdaysSelect onClick={() => {
+      }}>{props.day}</Weekdays>)}
+      {select === true && (<WeekdaysSelect key={number} onClick={() => {
         setSelect(false);
         setHabitDay(habitDay.filter(a => a != days))
       }}>{props.day}</WeekdaysSelect>)}
@@ -45,7 +45,7 @@ const WeekdaysSelect = styled.p`
 
   color: #FFF;
 `;
-const WeekDays = styled.p`
+const Weekdays = styled.p`
   cursor: pointer;
 
   display:flex;

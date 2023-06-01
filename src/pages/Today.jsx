@@ -1,24 +1,77 @@
 import styled from "styled-components";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { useEffect, useContext, useState } from "react";
+import { UserDataContext } from "../context/UserDataContext";
+import { ProgressBarContext } from "../context/ProgressBarContext";
+import axios from "axios";
 
 export default function Today() {
+  const { setProgressBar } = useContext(ProgressBarContext);
+  const { userData } = useContext(UserDataContext);
+  const [task, setTask] = useState([]);
+  const [completed, setCompleted] = useState(0);
+  let n = 0;
+
+
+  const config = {
+    headers: {
+      "Authorization": `Bearer ${userData.token}`
+    }
+  }
+
+  useEffect(() => {
+    const URLGetTask = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today";
+
+    const promise = axios.get(URLGetTask, config);
+
+    promise.then(resposta => {
+      setTask(resposta.data)
+    });
+
+  }, [completed]);
+
+  task.map(dado => {
+    if (dado.done === true) {
+      n++;
+    }
+  });
+  setProgressBar((n / task.length) * 100);
+
   return (
     <Size>
       <Header />
       <div>
         <Head>
           <h1>Segunda, 17/05</h1>
-          <p>Nenhum hábito concluído ainda</p>
+          {n === 0 ? <p>Nenhum hábito concluído ainda</p> : <p><Completed>{(n / task.length) * 100 + "% dos hábitos concluídos"}</Completed></p>}
         </Head>
-        <Task>
-          <div>
-            <h1>Ler 1 capítulo de livro</h1>
-            <p>Sequência atual: 3 dias</p>
-            <p>Seu recorde: 5 dias</p>
-          </div>
-          <ion-icon name="checkbox"></ion-icon>
-        </Task>
+        {task.map(dado =>
+          <Task>
+            <div>
+              <h1>{dado.name}</h1>
+              <p>Sequência atual: {dado.currentSequence} dias</p>
+              <p>Seu recorde: {dado.highestSequence} dias</p>
+            </div>
+            {dado.done === true ? <Completed onClick={() => {
+              const URLPostUnCheck = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${dado.id}/uncheck`;
+              const body = {};
+              const promise = axios.post(URLPostUnCheck, body, config)
+
+              promise.then(() => setCompleted(completed - 1)).catch(erro => console.log(erro.response.data.message))
+
+            }}><ion-icon name="checkbox"></ion-icon></Completed> :
+              <ToDo onClick={() => {
+                const URLPostCheck = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${dado.id}/check`;
+                const body = {};
+                const promise = axios.post(URLPostCheck, body, config)
+
+                promise.then(() => setCompleted(completed + 1)).catch(erro => console.log(erro.response.data.message))
+
+              }}><ion-icon name="checkbox"></ion-icon></ToDo>}
+          </Task>)}
+        {task.length === 0 && <Text>Você não tem nenhum hábito hoje.</Text>}
+
       </div>
       <Footer />
     </Size>
@@ -49,7 +102,22 @@ const Head = styled.div`
     color: #BABABA;
   }
 `;
+const Text = styled.p`
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin-left:17px;
+  margin-right:17px;
+  margin-top:20px;
 
+  font-family: 'Lexend Deca';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+
+  color: #666666;
+`;
 const Task = styled.div`
   display: flex;
   justify-content:space-around;
@@ -62,6 +130,7 @@ const Task = styled.div`
   border-radius: 5px;
 
   margin:auto;
+  margin-bottom:10px;
   div{
     h1{
       font-family: 'Lexend Deca';
@@ -86,7 +155,13 @@ const Task = styled.div`
     width: 69px;
     height: 69px;
 
-    color: #EBEBEB;
     border-radius: 5px;
   }
+`;
+const Completed = styled.div`
+  color:#8FC549;
+
+`;
+const ToDo = styled.div`
+  color:#EBEBEB;
 `;

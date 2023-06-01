@@ -3,13 +3,18 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../assets/img/logo.png";
 import { ThreeDots } from "react-loader-spinner";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { UserDataContext } from "../context/UserDataContext";
 
-export default function HomePage(props) {
+export default function HomePage() {
 
-  const { login, setLogin, setImgUser } = props;
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const { setUserData } = useContext(UserDataContext);
+  const [login, setLogin] = useState({
+    email: "",
+    password: ""
+  });
 
   function handleChange(event) {
     const newLogin = { ...login };
@@ -31,11 +36,10 @@ export default function HomePage(props) {
         setLoading(true)
 
         promise.then(resposta => {
-          setImgUser(resposta.data.image);
-          navigate("/habitos");
-          console.log(resposta.data);
-
+          navigate("/hoje");
+          setUserData(resposta.data);
         });
+
         promise.catch(erro => {
           setLoading(false);
           alert(erro.response.data.message);
