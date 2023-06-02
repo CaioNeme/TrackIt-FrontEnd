@@ -50,7 +50,7 @@ export default function HomePage() {
         {loading === true ? <input disabled data-test="email-input" required onChange={handleChange} value={login.email} name="email" placeholder="E-mail" type="email" /> : <input data-test="email-input" required onChange={handleChange} value={login.email} name="email" placeholder="E-mail" type="email" />}
         {loading === true ? <input disabled data-test="password-input" required onChange={handleChange} value={login.password} name="password" placeholder="Senha" type="password" /> : <input data-test="password-input" required onChange={handleChange} value={login.password} name="password" placeholder="Senha" type="password" />}
 
-        {loading === false ? <button data-test="login-btn">Entrar</button> : <button disabled><ThreeDots
+        {loading === false ? <button data-test="login-btn">Entrar</button> : <button disabled><ThreeDots data-test="signup-btn"
           height="80"
           width="80"
           radius="9"

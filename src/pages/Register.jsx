@@ -62,7 +62,7 @@ export default function Register() {
         {loading === true ? <input disabled data-test="user-name-input" required onChange={handleChange} value={register.name} name="name" placeholder="Nome" type="text" /> : <input data-test="user-name-input" required onChange={handleChange} value={register.name} name="name" placeholder="Nome" type="text" />}
         {loading === true ? <input disabled data-test="user-image-input" required onChange={handleChange} value={register.image} name="image" placeholder="Foto" type="url" /> : <input data-test="user-image-input" required onChange={handleChange} value={register.image} name="image" placeholder="Foto" type="url" />}
 
-        {loading === true ? <button disabled><ThreeDots
+        {loading === true ? <button data-test="signup-btn" disabled><ThreeDots
           height="80"
           width="80"
           radius="9"

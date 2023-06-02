@@ -4,24 +4,40 @@ import styled from "styled-components";
 export default function Week(props) {
 
   const [select, setSelect] = useState(false)
-  const { habitDay, setHabitDay, days, number } = props;
+  const { habitDay, setHabitDay, days, number, day, loading } = props;
 
 
   return (
     <>
-      {select === false && (<Weekdays data-test="habit-day" key={number} onClick={() => {
-        setSelect(true);
-        setHabitDay([...habitDay, days])
-      }}>{props.day}</Weekdays>)}
-      {select === true && (<WeekdaysSelect data-test="habit-day" key={number} onClick={() => {
-        setSelect(false);
-        setHabitDay(habitDay.filter(a => a != days))
-      }}>{props.day}</WeekdaysSelect>)}
+      {loading === false
+        ?
+        select === false ?
+          <Weekdays data-test="habit-day" key={number} onClick={() => {
+            setSelect(true);
+            setHabitDay([...habitDay, days])
+          }}>{day}</Weekdays>
+          :
+          <WeekdaysSelect data-test="habit-day" key={number} onClick={() => {
+            setSelect(false);
+            setHabitDay(habitDay.filter(a => a != days))
+          }}>{day}</WeekdaysSelect>
+        :
+        select === false ?
+          <Weekdays disabled data-test="habit-day" key={number} onClick={() => {
+            setSelect(true);
+            setHabitDay([...habitDay, days])
+          }}>{day}</Weekdays>
+          :
+          <WeekdaysSelect disabled data-test="habit-day" key={number} onClick={() => {
+            setSelect(false);
+            setHabitDay(habitDay.filter(a => a != days))
+          }}>{day}</WeekdaysSelect>}
+
     </>
   );
 }
 
-const WeekdaysSelect = styled.p`
+const WeekdaysSelect = styled.button`
   cursor: pointer;
 
   display:flex;
@@ -45,7 +61,7 @@ const WeekdaysSelect = styled.p`
 
   color: #FFF;
 `;
-const Weekdays = styled.p`
+const Weekdays = styled.button`
   cursor: pointer;
 
   display:flex;

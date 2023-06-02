@@ -54,7 +54,7 @@ export default function Habitis() {
       <Header />
       <Head>
         <p>Meus hábitos</p>
-        <div data-test="habit-create-btn" onClick={() => setOpen(true)}>+</div>
+        {loading === false ? <div data-test="habit-create-btn" onClick={() => setOpen(true)}>+</div> : <div disabled data-test="habit-create-btn" onClick={() => setOpen(true)}>+</div>}
       </Head>
       {open === true && <NewHabitis data-test="habit-create-container" onSubmit={event => {
         event.preventDefault();
@@ -81,21 +81,20 @@ export default function Habitis() {
         });
 
       }}>
-        <input data-test="habit-name-input" name="name" value={habitName.name} onChange={handleChange} placeholder="Nome do Hábito" type="text" />
+        {loading === false ? <input data-test="habit-name-input" name="name" value={habitName.name} onChange={handleChange} placeholder="Nome do Hábito" type="text" /> : <input disabled data-test="habit-name-input" name="name" value={habitName.name} onChange={handleChange} placeholder="Nome do Hábito" type="text" />}
         <div>
-          {weekdays.map(info => <Week
-            habitDay={habitDay}
-            setHabitDay={setHabitDay}
-            {...info}
-          />)}
+          {weekdays.map(info => <Week loading={loading} habitDay={habitDay} setHabitDay={setHabitDay} {...info} />)}
         </div>
         <Buttons>
-          <Cancel data-test="habit-create-cancel-btn" type="button" onClick={() => {
+          {loading === false ? <Cancel data-test="habit-create-cancel-btn" type="button" onClick={() => {
             setOpen(false);
             setLoading(false);
-          }}>Cancelar</Cancel>
+          }}>Cancelar</Cancel> : <Cancel disabled data-test="habit-create-cancel-btn" type="button" onClick={() => {
+            setOpen(false);
+            setLoading(false);
+          }}>Cancelar</Cancel>}
           {loading === false && <Save data-test="habit-create-save-btn" type="submit">Salvar</Save>}
-          {loading === true && <Save disabled type="submit">
+          {loading === true && <Save data-test="habit-create-save-btn" disabled type="submit">
             <ThreeDots
               height="35"
               width="50"
