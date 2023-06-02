@@ -55,7 +55,7 @@ export default function Today() {
           {n === 0 ? <p data-test="today-counter" >Nenhum hábito concluído ainda</p> : <p><Completed data-test="today-counter">{((n / task.length) * 100).toFixed(0) + "% dos hábitos concluídos"}</Completed></p>}
         </Head>
         {task.map(dado =>
-          <Task data-test="today-habit-coitainer" >
+          <Task data-test="today-habit-container" >
             <div>
               <h1 data-test="today-habit-name" >{dado.name}</h1>
               {dado.currentSequence > 0 ? <p><Completed data-test="today-habit-sequence" >Sequência atual: {dado.currentSequence} dias</Completed></p> : <p data-test="today-habit-sequence" >Sequência atual: {dado.currentSequence} dias</p>}
