@@ -93,8 +93,7 @@ export default function Habitis() {
             setOpen(false);
             setLoading(false);
           }}>Cancelar</Cancel>}
-          {loading === false && <Save data-test="habit-create-save-btn" type="submit">Salvar</Save>}
-          {loading === true && <Save data-test="habit-create-save-btn" disabled type="submit">
+          {loading === false ? <Save data-test="habit-create-save-btn" type="submit">Salvar</Save> : <Save data-test="habit-create-save-btn" disabled type="submit">
             <ThreeDots
               height="35"
               width="50"
@@ -104,8 +103,7 @@ export default function Habitis() {
               wrapperStyle={{}}
               wrapperClassName=""
               visible={true}
-            />
-          </Save>}
+            /></Save>}
         </Buttons>
       </NewHabitis>}
       {task.length !== 0 && task.map(dadosTask =>
