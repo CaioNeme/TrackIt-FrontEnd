@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import Logo from "../assets/img/logo.png";
+import Logo from "../assets/img/logo.svg";
 import { ThreeDots } from "react-loader-spinner";
 import { useState, useContext } from "react";
 import { UserDataContext } from "../context/UserDataContext";
@@ -26,7 +26,6 @@ export default function HomePage() {
     <Size>
       <LogoText>
         <img src={Logo} alt="" />
-        <p>TrackIt</p>
       </LogoText>
       <Form onSubmit={event => {
         event.preventDefault();
@@ -36,6 +35,7 @@ export default function HomePage() {
         setLoading(true)
 
         promise.then(resposta => {
+          setLoading(false)
           navigate("/hoje");
           setUserData(resposta.data);
         });
@@ -47,12 +47,10 @@ export default function HomePage() {
 
 
       }}>
-        <input data-test="email-input" required onChange={handleChange} value={login.email} name="email" placeholder="E-mail" type="email" />
-        <input data-test="password-input" required onChange={handleChange} value={login.password} name="password" placeholder="Senha" type="password" />
-        {loading === false && <button data-test="login-btn">Entrar</button>}
+        {loading === true ? <input disabled data-test="email-input" required onChange={handleChange} value={login.email} name="email" placeholder="E-mail" type="email" /> : <input data-test="email-input" required onChange={handleChange} value={login.email} name="email" placeholder="E-mail" type="email" />}
+        {loading === true ? <input disabled data-test="password-input" required onChange={handleChange} value={login.password} name="password" placeholder="Senha" type="password" /> : <input data-test="password-input" required onChange={handleChange} value={login.password} name="password" placeholder="Senha" type="password" />}
 
-
-        {loading === true && <button disabled><ThreeDots
+        {loading === false ? <button data-test="login-btn">Entrar</button> : <button disabled><ThreeDots
           height="80"
           width="80"
           radius="9"
@@ -62,7 +60,6 @@ export default function HomePage() {
           wrapperClassName=""
           visible={true}
         /></button>}
-
 
       </Form>
       <Link to={"/cadastro"}>

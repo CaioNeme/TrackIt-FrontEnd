@@ -66,7 +66,7 @@ export default function Today() {
               const body = {};
               const promise = axios.post(URLPostUnCheck, body, config)
 
-              promise.then(() => setCompleted(completed - 1)).catch(erro => console.log(erro.response.data.message))
+              promise.then(() => setCompleted(completed - 1)).catch(erro => alert(erro.response.data.message))
 
             }}><ion-icon name="checkbox"></ion-icon></Completed> :
               <ToDo data-test="today-habit-check-btn" onClick={() => {
@@ -74,12 +74,11 @@ export default function Today() {
                 const body = {};
                 const promise = axios.post(URLPostCheck, body, config)
 
-                promise.then(() => setCompleted(completed + 1)).catch(erro => console.log(erro.response.data.message))
+                promise.then(() => setCompleted(completed + 1)).catch(erro => alert(erro.response.data.message))
 
               }}><ion-icon name="checkbox"></ion-icon></ToDo>}
           </Task>)}
         {task.length === 0 && <Text>Você não tem nenhum hábito hoje.</Text>}
-
       </div>
       <Footer />
     </Size>

@@ -1,13 +1,15 @@
 import styled from "styled-components";
 import axios from "axios";
+import { ThreeDots } from "react-loader-spinner";
 import { Link, useNavigate } from "react-router-dom";
-import Logo from "../assets/img/logo.png";
+import Logo from "../assets/img/logo.svg";
 import React, { useState } from 'react';
 
 
 export default function Register() {
 
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [register, setRegister] = useState({
     email: "",
     name: "",
@@ -27,10 +29,10 @@ export default function Register() {
     <Size>
       <LogoText>
         <img src={Logo} alt="" />
-        <p>TrackIt</p>
       </LogoText>
       <Form onSubmit={event => {
         event.preventDefault();
+        setLoading(true);
 
         let post = register;
 
@@ -38,14 +40,13 @@ export default function Register() {
 
         const promise = axios.post(URLPostRegister, post);
 
-        promise.then(resposta => {
-          console.log(resposta.data);
+        promise.then(() => {
+          setLoading(false);
           navigate("/")
         });
 
         promise.catch(erro => {
-          console.log(register);
-          console.log(erro);
+          setLoading(false);
           setRegister({
             email: "",
             name: "",
@@ -56,12 +57,21 @@ export default function Register() {
         })
 
       }}>
-        <input data-test="email-input" required onChange={handleChange} value={register.email} name="email" placeholder="E-mail" type="email" />
-        <input data-test="password-input" required onChange={handleChange} value={register.password} name="password" placeholder="Senha" type="password" />
-        <input data-test="user-name-input" required onChange={handleChange} value={register.name} name="name" placeholder="Nome" type="text" />
-        <input data-test="user-image-input" required onChange={handleChange} value={register.image} name="image" placeholder="Foto" type="url" />
+        {loading === true ? <input disabled data-test="email-input" required onChange={handleChange} value={register.email} name="email" placeholder="E-mail" type="email" /> : <input data-test="email-input" required onChange={handleChange} value={register.email} name="email" placeholder="E-mail" type="email" />}
+        {loading === true ? <input disabled data-test="password-input" required onChange={handleChange} value={register.password} name="password" placeholder="Senha" type="password" /> : <input data-test="password-input" required onChange={handleChange} value={register.password} name="password" placeholder="Senha" type="password" />}
+        {loading === true ? <input disabled data-test="user-name-input" required onChange={handleChange} value={register.name} name="name" placeholder="Nome" type="text" /> : <input data-test="user-name-input" required onChange={handleChange} value={register.name} name="name" placeholder="Nome" type="text" />}
+        {loading === true ? <input disabled data-test="user-image-input" required onChange={handleChange} value={register.image} name="image" placeholder="Foto" type="url" /> : <input data-test="user-image-input" required onChange={handleChange} value={register.image} name="image" placeholder="Foto" type="url" />}
 
-        <button data-test="signup-btn">Cadastrar</button>
+        {loading === true ? <button disabled><ThreeDots
+          height="80"
+          width="80"
+          radius="9"
+          color="#FFF"
+          ariaLabel="three-dots-loading"
+          wrapperStyle={{}}
+          wrapperClassName=""
+          visible={true}
+        /></button> : <button data-test="signup-btn">Cadastrar</button>}
       </Form>
       <Link to={"/"}>
         <LogIn data-test="login-link"><p>Já tem uma conta? Faça o login!</p></LogIn>
