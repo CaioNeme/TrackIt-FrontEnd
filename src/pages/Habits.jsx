@@ -114,15 +114,19 @@ export default function Habitis() {
           <div>
             <Text data-test="habit-name" >{dadosTask.name}</Text>
             <ion-icon data-test="habit-delete-btn" onClick={() => {
-              const URLDeleteTask = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${dadosTask.id}`
+              if (confirm("Você tem CERTEZA que deseja deletar esse hábito?") === true) {
+                const URLDeleteTask = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${dadosTask.id}`
 
-              const promise = axios.delete(URLDeleteTask, config)
+                const promise = axios.delete(URLDeleteTask, config)
 
-              promise.then(() => {
-                setVariavel(variavel + 1);
-              }).catch(erro => {
-                alert(erro.response.data.message);
-              });
+                promise.then(() => {
+                  setVariavel(variavel + 1);
+                }).catch(erro => {
+                  alert(erro.response.data.message);
+                });
+              }
+
+
 
             }} name="trash-outline" />
           </div>
