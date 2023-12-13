@@ -15,8 +15,6 @@ export default function Today() {
   const [task, setTask] = useState([]);
   const [completed, setCompleted] = useState(0);
   let n = 0;
-
-
   const config = {
     headers: {
       "Authorization": `Bearer ${token}`
@@ -25,13 +23,10 @@ export default function Today() {
 
   useEffect(() => {
     const URLGetTask = `${import.meta.env.VITE_API_URL}/habits/today`;
-
     const promise = axios.get(URLGetTask, config);
-
-    promise.then(resposta => {
-      setTask(resposta.data)
+    promise.then(resp => {
+      setTask(resp.data)
     });
-
   }, [completed]);
 
   task.map(dado => {
@@ -65,17 +60,13 @@ export default function Today() {
               const URLPostUnCheck = `${import.meta.env.VITE_API_URL}/habits/${dado.id}/uncheck`;
               const body = {};
               const promise = axios.post(URLPostUnCheck, body, config)
-
-              promise.then(() => setCompleted(completed - 1)).catch(erro => alert(erro.response.data.message))
-
+              promise.then(() => setCompleted(completed - 1)).catch(error => alert(error.response.data.message))
             }}><ion-icon name="checkbox"></ion-icon></Completed> :
               <ToDo data-test="today-habit-check-btn" onClick={() => {
                 const URLPostCheck = `${import.meta.env.VITE_API_URL}/habits/${dado.id}/check`;
                 const body = {};
                 const promise = axios.post(URLPostCheck, body, config)
-
-                promise.then(() => setCompleted(completed + 1)).catch(erro => alert(erro.response.data.message))
-
+                promise.then(() => setCompleted(completed + 1)).catch(error => alert(error.response.data.message))
               }}><ion-icon name="checkbox"></ion-icon></ToDo>}
           </Task>)}
         {task.length === 0 && <Text>Você não tem nenhum hábito hoje.</Text>}

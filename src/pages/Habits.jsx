@@ -16,7 +16,7 @@ export default function Habitis() {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const { token } = useContext(UserDataContext);
-  const [variavel, setVariavel] = useState(0);
+  const [att, setAtt] = useState(0);
   const weekdays = [
     { day: "D", days: 0 },
     { day: "S", days: 1 },
@@ -39,7 +39,7 @@ export default function Habitis() {
 
     promise.then(resposta => setTask(resposta.data));
 
-  }, [variavel]);
+  }, [att]);
 
   function handleChange(event) {
     const newHabitName = { ...habitName };
@@ -66,7 +66,7 @@ export default function Habitis() {
         const promise = axios.post(URLPostNewTask, body, config)
 
         promise.then(() => {
-          setVariavel(variavel + 1);
+          setAtt(att + 1);
           setLoading(false);
           setOpen(false);
           setHabitiName({ name: "" });
@@ -104,18 +104,18 @@ export default function Habitis() {
             /></Save>}
         </Buttons>
       </NewHabitis>}
-      {task.length !== 0 && task.map(dadosTask =>
+      {task.length !== 0 && task.map(infoTask =>
         <Task data-test="habit-container" >
           <div>
-            <Text data-test="habit-name" >{dadosTask.name}</Text>
+            <Text data-test="habit-name" >{infoTask.name}</Text>
             <ion-icon data-test="habit-delete-btn" onClick={() => {
               if (confirm("Você tem CERTEZA que deseja deletar esse hábito?") === true) {
-                const URLDeleteTask = `${import.meta.env.VITE_API_URL}/habits/${dadosTask.id}`
+                const URLDeleteTask = `${import.meta.env.VITE_API_URL}/habits/${infoTask.id}`
 
                 const promise = axios.delete(URLDeleteTask, config)
 
                 promise.then(() => {
-                  setVariavel(variavel + 1);
+                  setAtt(att + 1);
                 }).catch(erro => {
                   alert(erro.response.data.message);
                 });
@@ -126,7 +126,7 @@ export default function Habitis() {
             }} name="trash-outline" />
           </div>
           <div>
-            {weekdays.map(info => dadosTask.days.includes(info.days) ? <WeekdaysSelect data-test="habit-day" key={info.number}>{info.day}</WeekdaysSelect> : <Weekdays data-test="habit-day" key={info.number}>{info.day}</Weekdays>)}
+            {weekdays.map(info => infoTask.days.includes(info.days) ? <WeekdaysSelect data-test="habit-day" key={info.number}>{info.day}</WeekdaysSelect> : <Weekdays data-test="habit-day" key={info.number}>{info.day}</Weekdays>)}
           </div>
         </Task>
       )}
