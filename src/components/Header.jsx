@@ -7,14 +7,17 @@ import { UserDataContext } from "../context/UserDataContext";
 export default function Header() {
   const { userData } = useContext(UserDataContext);
 
-
+  function clearLocalStorage() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userData');
+  }
 
   return (
     <>
       <Shadow />
       <Head data-test="header">
         <Link to={"/"}>
-          <p>TrackIt</p>
+          <p onClick={clearLocalStorage}>TrackIt</p>
         </Link>
         <img data-test="avatar" src={userData.image} alt="Foto do usuario" />
       </Head>
