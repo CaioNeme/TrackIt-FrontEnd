@@ -10,7 +10,7 @@ export default function HomePage() {
 
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const { setUserData } = useContext(UserDataContext);
+  const { setUserData, setToken } = useContext(UserDataContext);
   const [login, setLogin] = useState({
     email: "",
     password: ""
@@ -29,15 +29,18 @@ export default function HomePage() {
       </LogoText>
       <Form onSubmit={event => {
         event.preventDefault();
-        const URLPostLogin = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login";
+        const URLPostLogin = `${import.meta.env.VITE_API_URL}/auth/login`;
         let post = login;
         const promise = axios.post(URLPostLogin, post);
         setLoading(true)
 
         promise.then(resposta => {
           setLoading(false)
-          navigate("/hoje");
+          localStorage.setItem("token", resposta.data.token);
+          localStorage.setItem("userData", JSON.stringify(resposta.data));
+          setToken(resposta.data.token);
           setUserData(resposta.data);
+          navigate("/hoje");
         });
 
         promise.catch(erro => {

@@ -36,7 +36,7 @@ export default function Register() {
 
         let post = register;
 
-        const URLPostRegister = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up"
+        const URLPostRegister = `${import.meta.env.VITE_API_URL}/auth/sign-up`
 
         const promise = axios.post(URLPostRegister, post);
 

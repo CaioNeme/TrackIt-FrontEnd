@@ -10,7 +10,13 @@ import { UserDataContext } from "../context/UserDataContext";
 
 export default function Habitis() {
 
-
+  const [habitDay, setHabitDay] = useState([]);
+  const [habitName, setHabitiName] = useState({ name: "" });
+  const [task, setTask] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { token } = useContext(UserDataContext);
+  const [variavel, setVariavel] = useState(0);
   const weekdays = [
     { day: "D", days: 0 },
     { day: "S", days: 1 },
@@ -20,22 +26,14 @@ export default function Habitis() {
     { day: "S", days: 5 },
     { day: "S", days: 6 }
   ];
-
-  const [habitDay, setHabitDay] = useState([]);
-  const [habitName, setHabitiName] = useState({ name: "" });
-  const [task, setTask] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const { userData } = useContext(UserDataContext);
-  const [variavel, setVariavel] = useState(0);
   const config = {
     headers: {
-      "Authorization": `Bearer ${userData.token}`
+      "Authorization": `Bearer ${token}`
     }
   }
 
   useEffect(() => {
-    const URLGetTask = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
+    const URLGetTask = `${import.meta.env.VITE_API_URL}/habits`;
 
     const promise = axios.get(URLGetTask, config);
 
@@ -60,7 +58,7 @@ export default function Habitis() {
         event.preventDefault();
         setLoading(true);
 
-        const URLPostNewTask = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
+        const URLPostNewTask = `${import.meta.env.VITE_API_URL}/habits`;
         const body = {
           name: `${habitName.name}`,
           days: habitDay
@@ -112,7 +110,7 @@ export default function Habitis() {
             <Text data-test="habit-name" >{dadosTask.name}</Text>
             <ion-icon data-test="habit-delete-btn" onClick={() => {
               if (confirm("Você tem CERTEZA que deseja deletar esse hábito?") === true) {
-                const URLDeleteTask = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${dadosTask.id}`
+                const URLDeleteTask = `${import.meta.env.VITE_API_URL}/habits/${dadosTask.id}`
 
                 const promise = axios.delete(URLDeleteTask, config)
 

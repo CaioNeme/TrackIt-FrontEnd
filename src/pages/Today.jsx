@@ -11,7 +11,7 @@ import dayjs from "dayjs";
 
 export default function Today() {
   const { setProgressBar } = useContext(ProgressBarContext);
-  const { userData } = useContext(UserDataContext);
+  const { token } = useContext(UserDataContext);
   const [task, setTask] = useState([]);
   const [completed, setCompleted] = useState(0);
   let n = 0;
@@ -19,12 +19,12 @@ export default function Today() {
 
   const config = {
     headers: {
-      "Authorization": `Bearer ${userData.token}`
+      "Authorization": `Bearer ${token}`
     }
   }
 
   useEffect(() => {
-    const URLGetTask = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today";
+    const URLGetTask = `${import.meta.env.VITE_API_URL}/habits/today`;
 
     const promise = axios.get(URLGetTask, config);
 
@@ -62,7 +62,7 @@ export default function Today() {
               {dado.highestSequence !== 0 && dado.highestSequence === dado.currentSequence ? <p><Completed data-test="today-habit-record" >Seu recorde: {dado.highestSequence} dias</Completed></p> : <p data-test="today-habit-record" >Seu recorde: {dado.highestSequence} dias</p>}
             </div>
             {dado.done === true ? <Completed data-test="today-habit-check-btn" onClick={() => {
-              const URLPostUnCheck = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${dado.id}/uncheck`;
+              const URLPostUnCheck = `${import.meta.env.VITE_API_URL}/habits/${dado.id}/uncheck`;
               const body = {};
               const promise = axios.post(URLPostUnCheck, body, config)
 
@@ -70,7 +70,7 @@ export default function Today() {
 
             }}><ion-icon name="checkbox"></ion-icon></Completed> :
               <ToDo data-test="today-habit-check-btn" onClick={() => {
-                const URLPostCheck = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${dado.id}/check`;
+                const URLPostCheck = `${import.meta.env.VITE_API_URL}/habits/${dado.id}/check`;
                 const body = {};
                 const promise = axios.post(URLPostCheck, body, config)
 
